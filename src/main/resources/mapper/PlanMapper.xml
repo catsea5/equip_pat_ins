@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lyj.equipment.mapper.PlanMapper">
+    <select id="findByPage" resultType="com.lyj.equipment.entity.Plan">
+        select * from plan
+        where isdelete = 0
+            <if test="keyword != null">
+              and  pname like '%${keyword}%'
+            </if>
+            <if test="startTime != null">
+              and  startTime > #{startTime}
+            </if>
+            <if test="endTime != null">
+              and  endTime &lt; #{endTime}
+            </if>
+        <if test="state != null">
+            and  state = #{state}
+        </if>
+        order by state desc
+    </select>
+    <insert id="insert">
+        insert into plan(pname,state,isdelete,startTime,endTime)
+        value (#{pname},#{state},#{isdelete},#{startTime},#{endTime})
+    </insert>
+    <update id="update">
+        update plan
+        set pname = #{name},startTime = #{startTime},endTime = #{endTime}
+        where pid = #{pid}
+    </update>
+    <update id="delete">
+        update plan
+        set isdelete = 1
+        where pid = #{id}
+    </update>
+    <update id="changeStateByTime">
+        update plan
+        set state = (
+         case
+            when endTime &lt; #{date} then 0
+            when startTime &lt; #{date} and endTime > #{date} then 2
+            else state
+            end
+        )
+    </update>
+    <select id="queryById" resultType="com.lyj.equipment.entity.Plan">
+        select * from plan where pid = #{id}
+    </select>
+    <select id="findByState" resultType="com.lyj.equipment.entity.Plan">
+        select * from plan where state >= #{state} and isdelete = 0
+    </select>
+    <select id="getPlanByUid" resultType="com.lyj.equipment.entity.Plan">
+        select * from plan where pid in (select pid from schedule where uid = #{userId}) and state > 0
+    </select>
+</mapper>

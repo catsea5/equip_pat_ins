@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lyj.equipment.mapper.LoginMapper">
+    <select id="selectByEmail" resultType="com.lyj.equipment.entity.User">
+        select * from user where uemail = #{email}
+    </select>
+
+    <insert id="insert">
+        insert into user(uemail,upassword,uname,permission,ustate,createTime)
+        values (#{uemail},#{upassword},#{uname},#{permission},#{ustate},#{createTime})
+    </insert>
+
+    <select id="isExist" resultType="java.lang.Integer">
+        select count(uid) from user where uemail = #{email} and ustate > 0
+    </select>
+
+    <update id="update">
+        update user
+        set upassword = #{password}
+        where uemail = #{email}
+    </update>
+
+</mapper>

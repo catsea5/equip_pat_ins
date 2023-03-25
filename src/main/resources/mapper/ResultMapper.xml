@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lyj.equipment.mapper.ResultMapper">
+    <insert id="insert">
+        insert into result
+        value (#{pid},#{uid},#{eid},#{state},#{uploadTime},#{commit})
+    </insert>
+    <select id="getEquipConut" resultType="java.lang.Integer">
+        select count(ae.eid) from apartment_equip ae join result r on ae.eid != r.eid where aid in (select aid from apartment_equip where eid = #{eid})
+    </select>
+    <resultMap id="ResultWebList" type="com.lyj.equipment.vo.result.ResultWebListVo">
+        <id column="e_id" property="eid"/>
+        <result column="pid" property="pid"></result>
+        <result column="pname" property="pname"></result>
+        <result column="uid" property="uid"></result>
+        <result column="uname" property="uname"></result>
+        <result column="eid" property="eid"></result>
+        <result column="ename" property="ename"></result>
+        <result column="type" property="type"></result>
+        <result column="aid" property="aid"></result>
+        <result column="anumber" property="anumber"></result>
+        <collection property="childList"
+                    column="{eid=eid,pid=pid,uid=uid}"
+                    javaType="arraylist"
+                    select="com.lyj.equipment.mapper.ResultMapper.getResultChild">
+        </collection>
+    </resultMap>
+    <select id="getPageList" resultMap="ResultWebList">
+        select
+            p.pid as pid,p.pname as pname,u.uid as uid,u.uname as uname,e.eid as eid,e.ename as ename,e.type as type,a.aid as aid,a.anumber as anumber,r.state as state,r.uploadTime as uploadTime,r.commit as commit
+        from result r
+        join plan p on r.pid = p.pid
+        join user u on r.uid = u.uid
+        join equip e on r.eid = e.eid
+        join apartment_equip ae on r.eid = ae.eid
+        join apartment a on ae.aid = a.aid
+        <where>
+            <if test="type != null">
+                and e.type = #{type}
+            </if>
+            <if test="anumber != null">
+                and a.anumber = #{anumber}
+            </if>
+            <if test="keyword != null">
+                and (p.pname like '%${keyword}%' or  u.uname like '%${keyword}%' or  e.ename like '%${keyword}%')
+            </if>
+        </where>
+        group by p.pid,u.uid,e.eid
+        order by r.uploadTime desc
+    </select>
+    <select id="getResultChild" resultType="com.lyj.equipment.vo.result.ResultChildVo">
+        select state , uploadTime , commit
+        from result
+        where pid = #{pid} and uid = #{uid} and eid = #{eid}
+    </select>
+
+    <select id="getMyHistory" resultMap="ResultWebList">
+        select
+        p.pid as pid,p.pname as pname,u.uid as uid,u.uname as uname,e.eid as eid,e.ename as ename,e.type as type,a.aid as aid,a.anumber as anumber,r.state as state,r.uploadTime as uploadTime,r.commit as commit
+        from result r
+        join plan p on r.pid = p.pid
+        join user u on r.uid = u.uid
+        join equip e on r.eid = e.eid
+        join apartment_equip ae on r.eid = ae.eid
+        join apartment a on ae.aid = a.aid
+        where u.uid = #{uid}
+        group by p.pid,u.uid,e.eid
+        order by r.uploadTime desc
+    </select>
+    <select id="export" resultType="com.lyj.equipment.vo.result.ResultExportVo">
+        select
+            p.pname as pname,u.uname as uname,e.ename as ename,e.type as type,a.anumber as anumber,r.state as state,r.uploadTime as uploadTime,r.commit as commit
+        from result r
+        join plan p on r.pid = p.pid
+        join user u on r.uid = u.uid
+        join equip e on r.eid = e.eid
+        join apartment_equip ae on r.eid = ae.eid
+        join apartment a on ae.aid = a.aid
+        order by r.uploadTime desc
+    </select>
+</mapper>

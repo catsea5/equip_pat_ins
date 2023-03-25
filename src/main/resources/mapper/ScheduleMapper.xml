@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lyj.equipment.mapper.ScheduleMapper">
+    <select id="findScheduleByPid" resultType="com.lyj.equipment.vo.schedule.ScheduleListVo">
+        SELECT a.aid as aid , a.anumber as anumber , u.uid as uid , u.uname as uname , s.state as state , s.commit as commit FROM schedule s join apartment a on s.aid = a.aid join user u on s.uid = u.uid where pid = #{id}
+    </select>
+    <delete id="deleteByAidAndPid">
+        delete from schedule
+        where aid = #{aid} and pid = #{pid}
+    </delete>
+    <insert id="add">
+        insert into schedule(pid,uid,aid,state,commit)
+        value (#{pid},#{uid},#{aid},0,#{commit})
+    </insert>
+    <resultMap id="ListMap" type="com.lyj.equipment.vo.schedule.ApartmentEquipListVo">
+        <result property="aid" column="aid"></result>
+        <result property="anumber" column="anumber"></result>
+        <result property="commit" column="commit"></result>
+        <collection property="equipList"
+                    column="{aid=aid,pid=pid,uid=uid}"
+                    javaType="arraylist"
+                    select="com.lyj.equipment.mapper.ScheduleMapper.getEquipList">
+        </collection>
+    </resultMap>
+    <select id="getInfoList" resultMap="ListMap">
+            select a.aid as aid,a.anumber as anumber,s.commit as commit, pid,uid
+            from apartment a join schedule s on s.aid = a.aid where pid = #{pid} and uid = #{uid}
+    </select>
+    <select id="getEquipList" resultType="com.lyj.equipment.entity.Equip">
+        select *  from equip e join apartment_equip ae on e.eid = ae.eid
+        where ae.aid = #{aid} and e.eid not in (select eid from result where pid = #{pid} and uid = #{uid})
+    </select>
+    <update id="changeStateToOneBy">
+        update schedule
+        set state = 1
+        where pid = #{pid} and aid  = (select aid from apartment_equip where eid = #{eid})
+    </update>
+    <select id="isExistByUidAndEid" resultType="java.lang.Integer">
+        select count(uid)
+        from schedule
+        where uid = #{uid} and aid = (select aid from apartment_equip where eid = #{eid})
+    </select>
+
+    <select id="sendEmail" resultType="com.lyj.equipment.vo.email.ScheduleEmailInfo">
+        select u.uname as uname , u.uemail as uemail , a.anumber as anumber , p.pname as pname , p.startTime as startTime, p.endTime as endTime
+        from user u
+        join apartment a on a.aid = #{aid}
+        join plan p on p.pid = #{pid}
+        where u.uid = #{uid}
+    </select>
+</mapper>

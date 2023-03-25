@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lyj.equipment.mapper.ApartmentMapper">
+    <select id="findAnumber" resultType="com.lyj.equipment.entity.Apartment">
+        select * from apartment
+    </select>
+    <insert id="addApartment">
+        insert into apartment(anumber)
+        value (#{anumber})
+    </insert>
+    <update id="updateApartment">
+        update apartment
+        set anumber = #{anumber}
+        where aid = #{aid}
+    </update>
+    <select id="findByPid" resultType="com.lyj.equipment.entity.Apartment">
+        select * from apartment where aid not in (select aid from schedule where pid = #{pid})
+    </select>
+</mapper>

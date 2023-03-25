@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lyj.equipment.mapper.EquipMapper">
+    <resultMap id="ListResultMap" type="com.lyj.equipment.entity.Equip">
+        <id column="e_id" property="eid"/>
+        <result column="e_name" property="ename"></result>
+        <result column="e_type" property="type"></result>
+        <result column="e_state" property="state"></result>
+        <result column="a_number" property="apartment.anumber"></result>
+        <result column="e_createTime" property="createTime"></result>
+        <result column="e_upsateTime" property="updateTime"></result>
+        <result column="a_id" property="apartment.aid"></result>
+        <result column="e_assetCode" property="assetCode"></result>
+        <result column="e_commit" property="commit"></result>
+    </resultMap>
+    <select id="findApplyByKeyword" resultMap="ListResultMap">
+        select e.eid as e_id,
+               e.ename as e_name,
+               e.type as e_type,
+               e.state as e_state,
+               a.anumber as a_number,
+               e.createTime as e_createTime,
+               e.updateTime as e_upsateTime,
+               a.aid as a_id,
+               e.assetCode as e_assetCode,
+               e.commit as e_commit
+        from equip e join apartment_equip ae on e.eid = ae.eid join apartment a on a.aid = ae.aid
+        <if test="keyword != null or type != null or anumber != null">
+            where e.eid > 0
+            <if test="keyword != ''">
+                and e.ename like '%${keyword}%'
+            </if>
+            <if test="type != ''">
+                and e.type = #{type}
+            </if>
+            <if test="anumber != ''">
+                and a.anumber = #{anumber}
+            </if>
+        </if>
+    </select>
+    <select id="findById" resultMap="ListResultMap">
+        select e.eid as e_id,
+               e.ename as e_name,
+               e.type as e_type,
+               e.state as e_state,
+               a.anumber as a_number,
+               e.createTime as e_createTime,
+               e.updateTime as e_upsateTime,
+               a.aid as a_id,
+                e.assetCode as e_assetCode,
+               e.commit as e_commit
+        from equip e join apartment_equip ae on e.eid = ae.eid join apartment a on a.aid = ae.aid where e.eid = #{id}
+    </select>
+    <update id="change">
+        update equip
+        set state = #{state}
+        where eid = #{id}
+    </update>
+    <select id="findType" resultType="java.lang.String">
+        select distinct type from equip
+    </select>
+    <insert id="add">
+        insert into equip(ename,type,state,assetCode,createTime,updateTime,commit)
+        value (#{ename},#{type},#{state},#{assetCode},#{createTime},#{updateTime},#{commit})
+    </insert>
+    <select id="maxId" resultType="java.lang.Integer">
+        select max(eid) from equip
+    </select>
+    <insert id="addEA">
+        insert into apartment_equip
+        value (#{aid},#{id})
+    </insert>
+    <update id="update">
+        update equip
+        set ename = #{ename},type = #{type},updateTime = #{updateTime},state = #{state}
+        where eid = #{eid}
+    </update>
+    <update id="updateEA">
+        update apartment_equip
+        set aid = #{aid}
+        where eid = #{id}
+    </update>
+    <update id="changeState">
+        update equip
+        set state = #{state}
+        where eid = #{eid}
+    </update>
+    <select id="getStateByEid" resultType="java.lang.Integer">
+        select state from equip where eid = #{eid}
+    </select>
+
+<!--    repair表     -->
+    <insert id="addRepair">
+        insert into repair
+        value (#{eid},#{uid},#{state},#{createTime},#{uploadTime},#{commit})
+    </insert>
+
+    <select id="getMyRepair" resultType="com.lyj.equipment.vo.repair.myRepairVo">
+        select e.eid as eid,e.ename as ename,e.type as type,a.aid as aid,a.anumber as anumber,r.createTime as createTime,r.commit as commit from repair r
+        join apartment_equip ae on r.eid = ae.eid
+        join apartment a on ae.aid = a.aid
+        join equip e on e.eid = r.eid
+        where uid = #{uid} and r.state = 1
+    </select>
+    <select id="isExistByUidAndEid" resultType="java.lang.Integer">
+        select count(uid) from repair where uid = #{uid} and eid = #{eid}
+    </select>
+    <update id="changeRepairState">
+        update repair
+        set state = 0 , updateTime = #{updateTime}
+        where uid = #{uid} and eid = #{eid}
+    </update>
+</mapper>

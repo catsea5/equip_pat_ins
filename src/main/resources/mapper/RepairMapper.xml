@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lyj.equipment.mapper.RepairMapper">
+    <insert id="addRepair">
+        insert into repair
+        value (#{eid},#{uid},#{state},#{createTime},#{uploadTime},#{commit})
+    </insert>
+
+    <select id="getMyRepair" resultType="com.lyj.equipment.vo.repair.myRepairVo">
+        select e.eid as eid,e.ename as ename,e.type as type,a.aid as aid,a.anumber as anumber,r.createTime as createTime,r.commit as commit from repair r
+        join apartment_equip ae on r.eid = ae.eid
+        join apartment a on ae.aid = a.aid
+        join equip e on e.eid = r.eid
+        where uid = #{uid} and r.state = 1
+    </select>
+    <select id="isExistByUidAndEid" resultType="java.lang.Integer">
+        select count(uid) from repair where uid = #{uid} and eid = #{eid}
+    </select>
+    <update id="changeRepairState">
+        update repair
+        set state = 0 , updateTime = #{updateTime}
+        where uid = #{uid} and eid = #{eid}
+    </update>
+    <select id="sendEmail" resultType="com.lyj.equipment.vo.email.RepairEmailInfo">
+        select u.uname as uname,u.uemail as uemail,e.ename as ename,e.type as type,a.anumber as anumber
+         from user u
+         join equip e
+         join apartment_equip ae on ae.eid = e.eid
+         join apartment a on a.aid = ae.eid
+         where u.uid = #{uid} and e.eid = #{eid}
+    </select>
+</mapper>

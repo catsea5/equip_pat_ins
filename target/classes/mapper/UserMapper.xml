@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lyj.equipment.mapper.UserMapper">
+    <select id="findByKeyword" resultType="com.lyj.equipment.entity.User">
+        select * from user where ustate &lt; 2
+        <if test="keyword != null">and (uname like '%${keyword}%' or uemail like '%${keyword}%')</if>
+    </select>
+    <select id="findApplyByKeyword" resultType="com.lyj.equipment.entity.User">
+        select * from user where ustate = 2
+        <if test="keyword != null">and (uname like '%${keyword}%' or uemail like '%${keyword}%')</if>
+    </select>
+
+
+    <update id="updateById">
+        update user
+        set uemail = #{uemail},upassword = #{upassword},uname = #{uname},updateTime = #{updateTime}
+        where uid = #{uid}
+    </update>
+
+    <select id="queryById" resultType="com.lyj.equipment.entity.User">
+        select * from user where uid = #{id}
+    </select>
+
+    <update id="change">
+        update user
+        set ustate = #{state}
+        where uid = #{id}
+    </update>
+    <select id="findIdAndName" resultType="com.lyj.equipment.vo.user.UserListVo">
+        select uid , uname from user where permission = 0 and ustate = 1
+    </select>
+</mapper>
