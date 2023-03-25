@@ -1,0 +1,44 @@
+{
+  "pages":[
+    "pages/login/login",
+    "pages/home/home",
+    "pages/function/function",
+    "pages/mine/mine",
+    "pages/logon/logon",
+    "pages/password/password",
+    "pages/equiplist/equiplist",
+    "pages/uploadequip/uploadequip",
+    "pages/myhistory/myhistory",
+    "pages/myrepair/myrepair"
+  ],
+  "window":{
+    "backgroundTextStyle":"light",
+    "navigationBarBackgroundColor": "#2b4b6b",
+    "navigationBarTitleText": "设备巡检",
+    "navigationBarTextStyle":"white"
+  },
+  "tabBar": {
+      "list": [
+        {
+            "pagePath": "pages/home/home",
+            "text": "首页",
+            "iconPath": "/images/home.png",
+            "selectedIconPath": "/images/home-select.png"
+        },
+        {
+            "pagePath": "pages/function/function",
+            "text": "功能",
+            "iconPath": "/images/function.png",
+            "selectedIconPath": "/images/function-select.png"
+        },
+        {
+          "pagePath": "pages/mine/mine",
+          "text": "我的",
+          "iconPath": "/images/mine.png",
+          "selectedIconPath": "/images/mine-select.png"
+      }
+    ]
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

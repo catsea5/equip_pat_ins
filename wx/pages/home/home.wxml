@@ -1,0 +1,36 @@
+<!--pages/swiper/swiper.wxml-->
+<swiper class="swiper-container" indicator-dots autoplay="true" interval="3000" circular>
+<!-- 第一页 -->
+  <swiper-item>
+      <image class="swiper-image" src="/static/images/swiper-A.png"></image>
+  </swiper-item>
+  <!-- 第二页 -->
+  <swiper-item>
+    <image class="swiper-image"  src="/static/images/swiper-B.png"></image>
+  </swiper-item>
+  <!-- 第三页 -->
+  <swiper-item>
+      <image class="swiper-image" src="/static/images/swiper-C.png"></image>
+  </swiper-item>
+</swiper>
+<view class="plan">
+    <text class="title-text">我的巡检任务</text>
+    <!-- 白线 -->
+    <view class="line"></view> 
+    <view class="plan-gird" style=" background-image: url('/static/images/bgImg.png');">
+    <!-- 列表 -->
+    <view wx:if="{{isEmpty == false}}" class="plan-list" wx:for="{{planList}}" wx:key="index">
+        <text>\n</text>
+        <text class="title">{{item.pname}}\n\n</text>
+        <text class="start">开始时间</text>
+        <text class="end">截止时间</text>
+        <text>\n\n</text>
+        <text class="startTime">{{item.startTime}}</text>
+        <text class="endTime">{{item.endTime}}</text>
+        <text>\n\n\n\n</text>
+        <button class="btn" size="mini" wx:if="{{item.state == 1}}">尚未进行</button>
+        <button class="btn" size="mini" wx:if="{{item.state == 2}}" bindtap="gotoPatrol" data-id="{{item.pid}}">开始巡检</button>
+    </view>
+    <view wx:if="{{isEmpty == true}}" style="text-align: center;margin-top: 170px;">展示没有数据</view>
+</view>
+</view>

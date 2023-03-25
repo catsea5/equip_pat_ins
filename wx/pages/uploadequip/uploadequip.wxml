@@ -1,0 +1,29 @@
+<!--pages/uploadequip/uploadequip.wxml-->
+<view style="position: absolute; height: 45%;width: 100%;border-bottom: 1rpx solid black;background-image: url('/static/images/bgImg2.png');">
+    <view style="text-align: center;height: 20%; border-bottom: 1rpx solid black;">
+        <text>\n</text>
+        <text style="font-size: 20px; font-weight: bold;">设备信息</text>
+    </view>
+    <view style="text-align: center;margin-top: 5%;">
+        <text style="font-weight: bold;border-bottom: 1rpx solid black;">设备编号 : {{equipInfo.eid}}\n\n</text>
+        <text style="font-weight: bold;border-bottom: 1rpx solid black;">设备名 : {{equipInfo.ename}}\n\n</text>
+        <text style="font-weight: bold;border-bottom: 1rpx solid black;">设备类型 : {{equipInfo.type}}\n\n</text>
+        <text style="font-weight: bold;border-bottom: 1rpx solid black;">所在房间号: {{equipInfo.apartment.anumber}}\n\n</text>
+        <text style="font-weight: bold;border-bottom: 1rpx solid black;">设备录入时间 : {{equipInfo.createTime}}</text>
+    </view>
+</view>
+<view style="position: absolute; height: 55%;width: 100%; bottom: 0;">
+    <view style="text-align: center;height: 17%; border-bottom: 1rpx solid black;">
+        <text>\n</text>
+        <text style="font-size: 20px; font-weight: bold;">上传设备信息</text>
+    </view>
+    <view style="height: 40px;margin-top: 10px; border-bottom: 1rpx solid black;">
+        <text style="font-weight: bold; float: left;width: 20%;">设备状态</text>
+        <view wx:if="{{uploadInfo.state == 2}}" style="width: 40%;height: 30px;float: left;text-align: center; border-right: 1rpx solid black;box-sizing: border-box;border-left: 1rpx solid black;border-top: 1rpx solid black;border-bottom: 1rpx solid black;" bindtap="changeStateTweToOne">设备正常</view>
+        <view wx:if="{{uploadInfo.state == 1}}" style="width: 40%;height: 30px;float: left;text-align: center; background-color: aqua; border-right: 1rpx solid black;box-sizing: border-box;border-left: 1rpx solid black;border-top: 1rpx solid black;border-bottom: 1rpx solid black;" bindtap="changeStateTweToOne">设备正常</view>
+        <view wx:if="{{uploadInfo.state == 1}}" style="width: 40%;height: 30px;float: right;text-align: center; border-right: 1rpx solid black;box-sizing: border-box;border-left: 1rpx solid black;border-top: 1rpx solid black;border-bottom: 1rpx solid black;" bindtap="changeStateOneToTwe">设备异常</view>
+        <view wx:if="{{uploadInfo.state == 2}}" style="width: 40%;height: 30px;float: right;text-align: center;background-color: aqua; border-right: 1rpx solid black;box-sizing: border-box;border-left: 1rpx solid black;border-top: 1rpx solid black;border-bottom: 1rpx solid black;" bindtap="changeStateOneToTwe">设备异常</view>
+    </view>
+    <textarea style="border-bottom: 1rpx solid black;width: 100%;" placeholder="提交备注" model:value="{{commit}}"></textarea>
+</view>
+<button type="primary" style="width: 100%;height: 7%;position: absolute;bottom: 0;border-radius: 10rpx;background-color: #2b4b6b;color: rgb(250, 243, 234);" bindtap="upload">上传</button>

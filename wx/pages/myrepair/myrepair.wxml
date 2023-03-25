@@ -1,0 +1,20 @@
+<view style="height: 100%; width: 100%;">
+    <view style="height: 30px;text-align: center;border-bottom: 1rpx solid gray;">历史巡检信息</view>
+    <scroll-view scroll-y style="position: absolute;height: 88%;">
+        <view style="height: auto;border-bottom: 1rpx solid black;" wx:for="{{repairList}}" wx:key="index">
+        <text style="font-weight: bold;left: 41.5%;position: absolute;">{{item.pname}}</text>
+        <text>
+        设备名称: {{item.ename}}
+        设备类型: {{item.type}}
+        所在房间: {{item.anumber}}
+        创建时间: {{item.createTime}} 
+        </text>
+        <text>
+        提交备注: {{item.commit}}
+        </text>
+        <view style="height: 23px;"></view>
+        </view>
+    </scroll-view>
+    <button type="primary" style="width: 100%; position: absolute;bottom: 0;height: 7%;" bindtap="scan">扫描上传</button>
+
+</view>

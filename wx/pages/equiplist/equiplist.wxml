@@ -1,0 +1,40 @@
+
+
+<movable-area style="height: 100%;width: 100%;position:absolute;left:0px;top:0px;background:  lightblue;">
+<!--pages/equiplist/equiplist.wxml-->
+<!-- 房间号列表 -->
+<view class="leftView" style="background-image: url('/static/images/bgimg2.png');">
+    <view class="lefviewtitle">位置</view>
+        <scroll-view class="leftscroll">
+            <view class="leftviewContext" wx:for="{{infoList}}" wx:key="index"  bindtap="changeIndexLeft" data-index="{{index}}">
+                <text wx:if="{{index == indexLeft}}" style="color: #5681ac;">{{item.anumber}} ▷</text> 
+                <text wx:if="{{index != indexLeft}}">{{item.anumber}}</text>
+            </view>
+        </scroll-view>
+</view>
+<!-- 中间分隔线 -->
+<view class="line"></view>
+<!-- 设备列表 -->
+<view class="rightview" style="background-image: url('/static/images/bgImg.png');">
+    <view class="rightviewtitle">未巡检设备信息</view>
+    <scroll-view scroll-y class="rightscroll">
+        <view class="rightviewContext" wx:for="{{infoList[indexLeft].equipList}}" wx:key="index">
+        <text>
+        名称:  {{item.ename}}  
+        类型:  {{item.type}}
+        </text>
+        </view>
+    </scroll-view>
+</view>
+<view class="rightcomit">
+    <text style="font-weight: bold;">巡检备注\n</text>
+    <text wx:if="{{infoList[indexLeft].commit == null || infoList[indexLeft].commit == ''}}">暂无备注</text>
+    <text wx:if="{{infoList[indexLeft].commit != null && infoList[indexLeft].commit != ''}}">{{infoList[indexLeft].commit}}</text>
+</view>
+<!-- 扫描按钮 -->
+<button class="scanBtn" style="width: 100%;" bindtap="scan">扫描设备二维码</button>
+<movable-view direction="all" style="height: 50px; width: 50px; background: #2b4b6b;border-radius:  50%;">
+    <text style="color: rgb(218, 214, 214);position: absolute;left: 20%;top: 30%;">笔记</text>
+</movable-view>
+
+</movable-area>

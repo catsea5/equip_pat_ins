@@ -1,0 +1,15 @@
+<!--pages/function/function.wxml-->
+<view class="grid" style="background-image: url('/static/images/bgimg2.png');">
+    <view class="grid-item" bindtap="myhistory">
+        <image src="/static/images/function-select.png"></image>
+        <text>我的历史</text>
+    </view>
+    <view class="grid-item">
+        <image src="/static/images/function-select.png"></image>
+        <text>笔记</text>
+    </view>
+    <view class="grid-item" bindtap="myrepair">
+        <image src="/static/images/function-select.png"></image>
+        <text>设备维修</text>
+    </view>
+</view>

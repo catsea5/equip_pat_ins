@@ -1,0 +1,69 @@
+.leftView {
+    position: absolute;
+    height: 100%;
+    left: 0; 
+    width: 30%;
+    background-color: rgb(255, 245, 245);
+}
+.lefviewtitle{
+    height: 70rpx;
+    font-weight: bold;
+    text-align: center;
+    background-color: rgb(250, 243, 234);
+    border-bottom: 1rpx solid gray;
+}
+.leftscroll{
+    position: absolute;
+    height: 93%;
+}
+.leftviewContext{
+    height: 100rpx;
+    margin-top: 50rpx;
+    text-align: center;
+    border-bottom: 1rpx solid gray;
+}
+.line{
+    position: absolute;
+    height: 100%;
+    left: 30%; 
+    width: 1%; 
+    background-color: rgb(124, 124, 124);
+}
+.rightview{
+    position: absolute;
+    height: 100%;
+    right: 0; 
+    width: 69%;
+    background-color: rgb(252, 249, 249);
+}
+.rightviewtitle{
+    height: 70rpx;
+    background-color: rgb(250, 243, 234);
+    font-weight: bold;
+    text-align: center;
+    border-bottom: 1rpx solid gray;
+}
+.rightscroll{
+    position: absolute;
+    height: 70%;
+}
+.rightviewContext{
+    height: 80px;
+    border-bottom: 1rpx solid gray;
+}
+.rightcomit{
+    position: absolute;
+    right: 0;
+    bottom: 7%; 
+    height: 23%;
+    width: 69%;
+    border-top: 1rpx solid black;
+}
+.scanBtn{
+    height: 7%;
+    position: absolute;
+    bottom: 0;
+    border-radius: 10rpx;
+    background-color: #2b4b6b;
+    color: rgb(250, 243, 234);
+}
